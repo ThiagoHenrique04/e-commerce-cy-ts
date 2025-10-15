@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-export function gerarDadosRegistro() {
+export function gerar_dados_login() {
     const senha = faker.internet.password({ length: 8 });
     return {
         primeiroNome: faker.person.firstName(),
@@ -11,3 +11,4 @@ export function gerarDadosRegistro() {
         confirmacaoSenha: senha
     }
 }
+
