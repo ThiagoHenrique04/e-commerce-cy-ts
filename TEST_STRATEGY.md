@@ -14,7 +14,7 @@ Este projeto visa automatizar os principais fluxos de um e-commerce de demonstra
 - **Estilo de Especificação:** BDD (Gherkin)
 - **Organização de Código:**
   - `elements/`: localizadores
-  - `pages/`: ações encapsuladas das páginas
+  - `actions/`: ações encapsuladas das páginas
   - `e2e/`: cenários de testes
   - `utils/`: funções auxiliares
   - `fixtures/`: dados de teste

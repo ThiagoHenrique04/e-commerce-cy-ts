@@ -1,0 +1,68 @@
+name: PR - Run E2E tests per spec (matrix)
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  gen-matrix:
+    name: Generate matrix of specs
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate matrix from cypress specs
+        id: set-matrix
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const core = require('@actions/core');
+            let files = [];
+            try {
+              files = execSync("git ls-files 'cypress/e2e/**/*.cy.ts'").toString().trim().split('\n').filter(Boolean);
+            } catch (e) {
+              files = [];
+            }
+            const matrix = files.map(f => ({ spec: f, name: f.split('/').pop().replace('.cy.ts','') }));
+            core.setOutput('matrix', JSON.stringify(matrix));
+
+  run-tests:
+    name: E2E - ${{ matrix.name }}
+    needs: gen-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.gen-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Cypress binary
+        run: npx cypress install
+
+      - name: Run spec
+        run: npx cypress run --spec "${{ matrix.spec }}"
+        env:
+          CYPRESS_baseUrl: https://ecommerce-playground.lambdatest.io/
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts-${{ matrix.name }}
+          path: |
+            cypress/videos
+            cypress/screenshots
