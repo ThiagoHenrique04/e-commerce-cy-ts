@@ -1,4 +1,4 @@
-import { RegistroPage } from "../pages/registro/registro_page"
+import { RegistroPage } from "../actions/registro/registro_page"
 import { gerarDadosRegistro } from '../utils/faker_utils';
 
 

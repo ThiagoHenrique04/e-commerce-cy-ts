@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run typecheck && npm run cy:run",
+    "cy:run": "cypress run",
+    "cy:run:reg": "cypress run --spec cypress/e2e/registro.cy.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
