@@ -1,8 +1,8 @@
-name: PR - Run E2E tests per spec (matrix)
+name: Run E2E tests on merge to main (matrix)
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches: [ main ]
 
 jobs:
   gen-matrix:
