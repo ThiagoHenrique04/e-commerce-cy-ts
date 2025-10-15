@@ -1,4 +1,4 @@
-name: Run E2E tests on merge to main (matrix)
+name: Run E2E tests on merge to main (registro)
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   gen-matrix:
-    name: Generate matrix of specs
+    name: Generate feature matrix from specs
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -14,21 +14,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate matrix from cypress specs
+      - name: Generate matrix grouped by feature
         id: set-matrix
         uses: actions/github-script@v6
         with:
           script: |
             const { execSync } = require('child_process');
-            const core = require('@actions/core');
+            const path = require('path');
             let files = [];
             try {
               files = execSync("git ls-files 'cypress/e2e/**/*.cy.ts'").toString().trim().split('\n').filter(Boolean);
             } catch (e) {
               files = [];
             }
-            const matrix = files.map(f => ({ spec: f, name: f.split('/').pop().replace('.cy.ts','') }));
-            core.setOutput('matrix', JSON.stringify(matrix));
+            // Group specs by feature name (basename without .cy.ts)
+            const groups = {};
+            for (const f of files) {
+              const base = path.basename(f).replace(/\.cy\.ts$/,'');
+              if (!groups[base]) groups[base] = [];
+              groups[base].push(f);
+            }
+            const matrix = Object.keys(groups).map(k => ({ feature: k, specs: groups[k].join(','), name: k }));
+            if (matrix.length === 0) {
+              return { matrix: JSON.stringify([{ feature: 'no_specs_found', specs: 'NO_SPECS_FOUND', name: 'no_specs_found' }]) };
+            }
+            return { matrix: JSON.stringify(matrix) };
 
   run-tests:
     name: E2E - ${{ matrix.name }}
@@ -53,8 +63,14 @@ jobs:
       - name: Install Cypress binary
         run: npx cypress install
 
-      - name: Run spec
-        run: npx cypress run --spec "${{ matrix.spec }}"
+      - name: Run feature specs
+        run: |
+          if [ "${{ matrix.specs }}" = "NO_SPECS_FOUND" ]; then
+            echo "::error::No Cypress specs found in cypress/e2e/**/*.cy.ts. Aborting job.";
+            exit 1;
+          fi
+          echo "Running specs for feature: ${{ matrix.feature }}";
+          npx cypress run --spec "${{ matrix.specs }}"
         env:
           CYPRESS_baseUrl: https://ecommerce-playground.lambdatest.io/
 
