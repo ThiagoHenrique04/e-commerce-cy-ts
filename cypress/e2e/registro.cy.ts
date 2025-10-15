@@ -1,5 +1,5 @@
 import { RegistroPage } from "../actions/registro/registro_page"
-import { gerarDadosRegistro } from '../utils/faker_utils';
+import { gerar_dados_login } from '../utils/faker_utils';
 
 
 describe('Testes da funcionalidade de Resgistro de Usúario', () => {
@@ -10,7 +10,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
 
 
     it('001 - Cenário Principal - Registrar usuario com sucesso', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -24,7 +24,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('002 - Tentar registrar usuario com e-mail existente', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -38,7 +38,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('003 - Tentar registrar usuario sem preecher primeiro nome', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
         RegistroPage.preencherEmail(dados.email)
@@ -51,7 +51,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('004 - Tentar registrar usuario sem preecher ultimo nome', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherEmail(dados.email)
@@ -64,7 +64,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('005 - Tentar registrar usuario sem preecher email', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -77,7 +77,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('006 - Tentar registrar usuario com email invalido', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -91,7 +91,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('007 - Tentar registrar usuario sem preencher campo senha', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -104,7 +104,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('008 - Tentar registrar usuario sem preencher campo confirmação de senha', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -117,7 +117,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('009 - Tentar registrar usuario com campo senha campo senha invalido', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -131,7 +131,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('010 - Tentar registrar usuario com campo confimação senha invalido', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -145,7 +145,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('011 - Tentar registrar usuario sem aceitar termos e condições', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
@@ -158,7 +158,7 @@ describe('Testes da funcionalidade de Resgistro de Usúario', () => {
     })
 
     it('012 - Registrar usuario aceitando Newsletter ', () => {
-        const dados = gerarDadosRegistro();
+        const dados = gerar_dados_login();
 
         RegistroPage.preencherPrimeiroNome(dados.primeiroNome)
         RegistroPage.preencherUltimoNome(dados.ultimoNome)
